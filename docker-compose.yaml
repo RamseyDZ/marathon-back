@@ -1,0 +1,36 @@
+# Docker Compose Configuration
+# visit https://docs.docker.com/compose/
+
+version: '3.8'
+services:
+  # app service for your backend
+  app:
+    container_name: backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      DB_NAME: marathonDB
+      DB_USER: ramsey
+      DB_PWD: 131992ramsey
+      MONGO_URI: mongodb://database:27017
+    ports:
+      - '3456:4000'
+    depends_on:
+      - database
+    volumes:
+      - .:/app
+
+
+  # start the mongodb service as container
+  database:
+    image: mongo:6-jammy
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27018:27017'
+    volumes:
+      - dbdata6:/data/db
+
+volumes:
+  dbdata6:
